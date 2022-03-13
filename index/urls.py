@@ -1,12 +1,15 @@
 from django.urls import include, path
-from rest_framework import routers
-from index import views
+from index.views import UserList, UserDetail, UserLogin, UserVerify, UserLogout
 
-router = routers.DefaultRouter()
-router.register('users', views.UserViewSet)
-router.register('groups', views.GroupViewSet)
+app_name = "index"
 
 urlpatterns = [
-    path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    # Users
+    path('users/', UserList.as_view(), name='list'),
+    path('users/<int:pk>/', UserDetail.as_view(), name='detail'),
+
+    # Auth
+    path('auth/login/', UserLogin.as_view(), name='login'),
+    path('auth/verify/<str:code>/', UserVerify.as_view(), name='verify'),
+    path('auth/logout/', UserLogout.as_view(), name='logout'),
 ]
