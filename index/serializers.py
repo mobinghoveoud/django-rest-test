@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email', 'first_name', 'role']
 
     def get_role(self, obj):
-        return obj.role_set.get().role
+        return obj.role_set.get().get_role()
 
     def create(self, validated_data):
         user = super().create(validated_data)
@@ -23,6 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
         instance = super().update(instance, validated_data)
         instance.role_set.update(role=self.initial_data.get('role'))
         return instance
+
 
 class RoleSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)
