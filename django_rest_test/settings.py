@@ -134,3 +134,8 @@ EMAIL_HOST_PASSWORD = 'password'
 # Redis
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}

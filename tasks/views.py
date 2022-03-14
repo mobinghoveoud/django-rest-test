@@ -1,13 +1,16 @@
 from django.http import Http404
-from rest_framework import status
+from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from tasks.models import Task
+from tasks.permissions import IsBroker
 from tasks.serializers import TaskSerializer
 
 
 class TaskList(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,IsBroker]
+
     def get(self, request):
         tasks = Task.objects.all()
         serializer = TaskSerializer(tasks, many=True, context={'request': request})
@@ -23,6 +26,8 @@ class TaskList(APIView):
 
 
 class TaskDetail(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
     def get_object(self, pk):
         try:
             return Task.objects.get(pk=pk)
